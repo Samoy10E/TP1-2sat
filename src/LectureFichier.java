@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 public class LectureFichier {
 
@@ -16,6 +17,8 @@ public class LectureFichier {
         BufferedReader b = new BufferedReader(new FileReader(file));
 
         String readLine;
+
+        ArrayList<String> list = new ArrayList<>();
 
         while ((readLine = b.readLine()) != null) {
             if (readLine.charAt(0) == 'c'){break;}
