@@ -15,12 +15,10 @@ public class LectureFichier {
 
         BufferedReader b = new BufferedReader(new FileReader(file));
 
-        String readLine = "";
-
-        System.out.println("Reading file using Buffered Reader");
+        String readLine;
 
         while ((readLine = b.readLine()) != null) {
-            if (readLine.charAt(0) == 'c'){}
+            if (readLine.charAt(0) == 'c'){break;}
             else if (readLine.charAt(0) == 'p'){
                 String[] mots = readLine.split(" ");
                 int Nvar = Integer.parseInt(mots[2]);
