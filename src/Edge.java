@@ -13,4 +13,12 @@ public class Edge<Label> {
         this.destination = to;
         this.label = label;
     }
+
+    public String toString(int cardinal){
+        String result =  "";
+        result = result.concat(TraitementGraphe.convIndexToVar(source,cardinal)+ " -> ");
+        result = result.concat(TraitementGraphe.convIndexToVar(destination,cardinal) + ", étiquette : ");
+        result = result.concat(label.toString() + "\n");
+        return result;
+    }
 }
