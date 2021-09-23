@@ -1,18 +1,24 @@
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Dictionary;
 
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        Graph<String> c3;
+        int k = 0;
+        ArrayList<String> file = TraitementGraphe.LectureFichier("/testSet1/formula" + k);
+        Graph<String> graph = TraitementGraphe.CreationGraph(file);
+        boolean result = Kosaraju.estSatifiable(graph);
+        System.out.println(graph);
+        System.out.println(result);
 
-        c3 = new Graph<String>(3);
-        c3.addArc(0,1,"");
-        c3.addArc(1,2,"");
-        c3.addArc(2,3,""); // Quel est le problème ici ?
-
-        System.out.print(c3.toString());
-
-        LectureFichier lf = new LectureFichier("formule-2-sat");
+        file = TraitementGraphe.LectureFichier("formule-2-sat");
+        graph = TraitementGraphe.CreationGraph(file);
+        result = Kosaraju.estSatifiable(graph);
+        System.out.println(graph);
+        System.out.println(result);
 
     }
 }
