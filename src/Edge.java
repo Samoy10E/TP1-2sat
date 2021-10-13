@@ -16,8 +16,8 @@ public class Edge<Label> {
 
     public String toString(int cardinal){
         String result =  "";
-        result = result.concat(TraitementGraphe.convIndexToVar(source,cardinal)+ " -> ");
-        result = result.concat(TraitementGraphe.convIndexToVar(destination,cardinal) + ", étiquette : ");
+        result = result.concat(TraitementGrapheImplication.convIndexToVar(source,cardinal)+ " -> ");
+        result = result.concat(TraitementGrapheImplication.convIndexToVar(destination,cardinal) + ", étiquette : ");
         result = result.concat(label.toString() + "\n");
         return result;
     }

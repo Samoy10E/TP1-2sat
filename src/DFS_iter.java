@@ -18,8 +18,11 @@ public class DFS_iter {
     public Edge[] getPredecesseur(){return predecesseur;}
 
     public Integer[] getOrdreSortie(){
+        //ordre sortie est une liste contenant les sommets dans l'ordre
         Integer[] ordreSortie = graphe.sommets();
+        //récupère la liste des temps de sortie des sommets rangés dans l'ordre des indices des littéraux
         Integer[] sorties = temps_sortie.clone();
+        //trie la liste des temps de sortie et effectue-les même changement sur les sommets pour obtenir l'ordre de sortie
         quickSort_sortie(ordreSortie,sorties,0,graphe.order()-1);
         return ordreSortie;
     }
@@ -62,6 +65,7 @@ public class DFS_iter {
     }
 
     public DFS_iter(Graph graph, Integer[] ordreSommet){
+        //parcours de graphe itératif en profondeur classique
         temps = 0;
         tIter = 0;
         graphe = graph;
@@ -97,39 +101,5 @@ public class DFS_iter {
             }
             temps_sortie[sommet]=temps++;
         }
-    }
-
-    public ArrayList<Integer>[] composanteConnexe(){
-        int maxIter=0;
-        for (int i=0;i< graphe.order();i++){
-            if (maxIter<temps_iter[i]){
-                maxIter = temps_iter[i];
-            }
-        }
-        ArrayList<Integer>[] compCon = new ArrayList[maxIter+1];
-        for (int i=0;i<maxIter+1;i++){
-            compCon[i] = new ArrayList<Integer>(1);
-        }
-
-        for (int i=0;i< graphe.order();i++){
-            compCon[temps_iter[i]].add(i);
-        }
-        return compCon;
-    }
-
-    public static boolean estPossible(ArrayList<Integer> composanteConnexe,int ordre){
-        for (int i=0; i< composanteConnexe.size();i++){
-            composanteConnexe.set(i,TraitementGraphe.convIndexToVar(composanteConnexe.get(i),ordre));
-        }
-        boolean estPos = true;
-        for (int i=0;i< composanteConnexe.size();i++){
-            for (int j=i+1;j<composanteConnexe.size();j++){
-                if (composanteConnexe.get(i)+composanteConnexe.get(j)==0){
-                    estPos = false;
-                    break;
-                }
-            }
-        }
-        return estPos;
     }
 }
