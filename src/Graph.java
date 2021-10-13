@@ -5,23 +5,13 @@ public class Graph<Label> {
 
     private int cardinal;
     private ArrayList<LinkedList<Edge>> incidency;
-    private boolean estSatifiable;
+    private boolean estSatisfiableDonne;//contient le résultat attendu et non pas le résultat du programme
 
-    public void setEstSatifiable(boolean estSatifiable){this.estSatifiable=estSatifiable;}
-    public boolean getEstSatisfiable(){return estSatifiable;}
-
-    public static Graph reverse(Graph graph){
-        Graph newGraph = new Graph(graph.order());
-        for (int sommet=0;sommet< graph.order();sommet++){
-            Edge[] arcs = graph.arcsSortant(sommet);
-            for (Edge arc:arcs){
-                newGraph.addArc(arc.dst(), arc.src(), arc.getLabel());
-            }
-        }
-        return newGraph;
-    }
+    public void setEstSatisfiableDonne(boolean estSatisfiableDonne){this.estSatisfiableDonne=estSatisfiableDonne;}
+    public boolean getEstSatisfiableDonne(){return estSatisfiableDonne;}
 
     public Graph(int size) {
+        //initialisation
         cardinal = size;
         incidency = new ArrayList<>(size+1);
         for (int i = 0;i<cardinal;i++) {
@@ -33,12 +23,30 @@ public class Graph<Label> {
         return cardinal;
     }
 
+    public Integer[] sommets() {
+        Integer[] s = new Integer[cardinal];
+        for (int i =0;i<cardinal;i++){s[i] = i;}
+        return s;
+    }
+
+    public static Graph reverse(Graph graph){
+        //fonction rendant un graphe dont le sens des arrètes est inversé par rapport à l'original
+        Graph newGraph = new Graph(graph.order());
+        for (int sommet=0;sommet< graph.order();sommet++){
+            Edge[] arcs = graph.arcsSortant(sommet);
+            for (Edge arc:arcs){
+                newGraph.addArc(arc.dst(), arc.src(), arc.getLabel());
+            }
+        }
+        return newGraph;
+    }
+
     public void addArc(int source, int dest, Label label) {
         incidency.get(source).addLast(new Edge(source,dest,label));
     }
 
     public Edge[] arcsSortant(int sommet){
-
+        //retourne la liste des arcs sortant du sommet
         int taille = incidency.get(sommet).size();
         Edge[] Larcs = new Edge[taille];
         for (int i=0;i<taille;i++){
@@ -47,18 +55,12 @@ public class Graph<Label> {
         return Larcs;
     }
 
-    public Integer[] sommets() {
-        Integer[] s = new Integer[cardinal];
-        for (int i =0;i<cardinal;i++){s[i] = i;}
-        return s;
-    }
-
     public String toString() {
         String result = "";
         result = result.concat("Nombre sommets : " + cardinal + "\n");
         result = result.concat("Sommets : \n");
         for (int i = 0; i<cardinal;i++) {
-            result = result.concat(TraitementGraphe.convIndexToVar(i,cardinal) + " ");
+            result = result.concat(TraitementGrapheImplication.convIndexToVar(i,cardinal) + " ");
         }
         result = result.concat("\nArcs : \n");
         for (int i = 0; i<cardinal;i++) {
@@ -67,8 +69,5 @@ public class Graph<Label> {
             }
         }
         return result;
-
     }
-
-
 }

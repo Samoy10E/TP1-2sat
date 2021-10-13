@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class TraitementGraphe {
+public class TraitementGrapheImplication {
 
     public static ArrayList<String> LectureFichier(String nom) throws IOException {
         //Création du chemin relatif "formule/nomFichier.txt"
@@ -41,21 +41,22 @@ public class TraitementGraphe {
         Initialisations du graphs, il y a 2 fois plus de sommet que de variable
         car il y aura x et -x, la variable et sa négation
          */
-       Graph graph = new Graph(Nvar*2);
+        Graph graph = new Graph(Nvar*2);
 
-       int source,dest;
-       String[] mots;
-       for (i=0;i<Clauses.size();i++){
-           String ligne = Clauses.get(i);
-           if (ligne.contains("c ")){
-               if (ligne.contains("Not satisfiable")){
-                   graph.setEstSatifiable(false);
-               }
-               else if (ligne.contains("Satisfiable")){
-                   graph.setEstSatifiable(true);
-               }
-           }
-           else {
+        int source,dest;
+        String[] mots;
+        for (i=0;i<Clauses.size();i++){
+            String ligne = Clauses.get(i);
+            if (ligne.contains("c ")){
+                //garde en mémoire le résultat attendu pour le graphe
+                if (ligne.contains("Not satisfiable")){
+                    graph.setEstSatisfiableDonne(false);
+                }
+                else if (ligne.contains("Satisfiable")){
+                    graph.setEstSatisfiableDonne(true);
+                }
+            }
+            else {
                //Je décompose la ligne en plusieurs mot, ex "x y 0"->["x","y","0"]
                mots = ligne.split(" ");
 
@@ -73,15 +74,44 @@ public class TraitementGraphe {
         return graph;
     }
 
-    public static int convIndexToVar(int index,int cardinal){
-        int newVar = index - cardinal/2;
-        if (index>=cardinal/2){newVar++;}
-        return newVar;
+    public static ArrayList<Integer>[] composanteConnexe(Integer[] temps_iter){
+        int cardinal = temps_iter.length;
+
+        //retourne les composantes connexes du graphe
+        int maxIter=0;
+        for (int i=0;i< cardinal;i++){
+            if (maxIter<temps_iter[i]){
+                maxIter = temps_iter[i];
+            }
+        }
+        ArrayList<Integer>[] compCon = new ArrayList[maxIter+1];
+        for (int i=0;i<maxIter+1;i++){
+            compCon[i] = new ArrayList<Integer>(1);
+        }
+
+        for (int i=0;i< cardinal;i++){
+            compCon[temps_iter[i]].add(i);
+        }
+        return compCon;
     }
 
     public  static int convVarToIndex(int var,int cardinal){
+        /*
+        On traduit l'entier relatif représentant un littéral
+        en l'indice qui lui est associé dans la liste des littéraux
+        */
         int newIndex = var + cardinal/2;
         if (var>0){newIndex--;}
         return newIndex;
+    }
+
+    public static int convIndexToVar(int index,int cardinal){
+        /*
+        On traduit l'indice du litéral dans la liste des littéraux
+        en l'entier relatif qui le représente dans les clauses
+        */
+        int newVar = index - cardinal/2;
+        if (index>=cardinal/2){newVar++;}
+        return newVar;
     }
 }
